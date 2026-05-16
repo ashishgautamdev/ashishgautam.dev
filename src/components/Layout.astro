@@ -1,0 +1,107 @@
+---
+import '../styles/global.css';
+import ThemeToggle from './ThemeToggle.astro';
+import Cursor from './Cursor.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Ashish Gautam',
+  description = 'Personal site of Ashish Gautam — writing, work, and a timeline of how I got here.',
+} = Astro.props;
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Ashish Gautam" href="/rss.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap"
+    />
+
+    <script is:inline>
+      // Apply theme before paint to avoid flash. Defaults to dark.
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const theme = stored || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-nav container">
+      <a href="/" class="brand">ashish gautam</a>
+      <nav>
+        <a href="/about" aria-current={isActive('/about') ? 'page' : undefined}>about</a>
+        <a href="/blog" aria-current={isActive('/blog') ? 'page' : undefined}>writing</a>
+        <a href="/now" aria-current={isActive('/now') ? 'page' : undefined}>now</a>
+        <a href="/uses" aria-current={isActive('/uses') ? 'page' : undefined}>uses</a>
+        <ThemeToggle />
+      </nav>
+    </header>
+
+    <main>
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site-footer container">
+      <span>© {new Date().getFullYear()} Ashish Gautam</span>
+      <span>
+        <a href="/rss.xml">rss</a> ·
+        <a href="https://www.linkedin.com/in/ashishgautamdev/">linkedin</a> ·
+        <a href="https://www.instagram.com/ashishgautam.dev">instagram</a> ·
+        <a href="mailto:ashishgautam2705@gmail.com">email</a>
+      </span>
+    </footer>
+
+    <Cursor />
+
+    <script is:inline>
+      // Console easter egg — for the curious who hit F12.
+      (function () {
+        const title =
+          '%cwell, hello there.';
+        const body =
+          "%cif you're poking around in here, we'd probably get along.\n" +
+          'say hi: ashishgautam2705@gmail.com\n' +
+          'or try typing `whoami()` ↓';
+        const titleStyle =
+          'font: 600 22px ui-serif, Georgia, serif; color: #b8430b; padding: 6px 0;';
+        const bodyStyle =
+          'font: 13px ui-monospace, Menlo, monospace; color: #4a4a55; line-height: 1.6;';
+        console.log(title, titleStyle);
+        console.log(body, bodyStyle);
+
+        // @ts-ignore
+        window.whoami = function () {
+          return [
+            'name      ashish gautam',
+            'role      software engineer @ apple',
+            'team      applied machine learning',
+            'location  hyderabad, india',
+            'site      ashishgautam.dev',
+          ].join('\n');
+        };
+      })();
+    </script>
+  </body>
+</html>

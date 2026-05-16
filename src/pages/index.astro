@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../components/Layout.astro';
+import Socials from '../components/Socials.astro';
+import me from '../assets/me.jpeg';
+---
+
+<Layout
+  title="Ashish Gautam — Software Engineer"
+  description="Ashish Gautam — software engineer at Apple, Applied Machine Learning. Based in Hyderabad, India."
+>
+  <section class="hero hero-with-photo">
+    <a href="/about" class="hero-photo" aria-label="About Ashish">
+      <Image src={me} alt="Ashish Gautam" width={220} height={220} loading="eager" />
+    </a>
+    <div>
+      <p class="eyebrow">hi, i'm</p>
+      <h1>Ashish Gautam.</h1>
+      <p class="lede">
+        Software engineer at <span class="accent">Apple</span>, working in
+        Applied Machine Learning. Based in Hyderabad, India.
+      </p>
+      <Socials />
+    </div>
+  </section>
+
+  <section class="section">
+    <p>
+      I've spent about eight years building software — first at
+      <strong>Nagarro</strong>, then at <strong>Amazon</strong> and
+      <strong>Salesforce</strong>, and now at <strong>Apple</strong>. My day-to-day
+      sits at the intersection of backend systems and applied ML, with a soft spot
+      for the parts of a system most people never see.
+    </p>
+    <p>
+      I studied Information Technology at <strong>GGSIP University</strong> in
+      Delhi, where I qualified for ICPC Asia Regionals and did way more
+      hackathons than was probably reasonable.
+    </p>
+    <p>
+      You can read more <a href="/about">about me</a>, see what I'm
+      <a href="/now">up to right now</a>, browse my <a href="/blog">writing</a>,
+      or peek at <a href="/uses">what I use</a>.
+    </p>
+  </section>
+</Layout>

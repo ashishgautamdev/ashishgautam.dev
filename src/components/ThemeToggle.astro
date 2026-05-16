@@ -1,0 +1,36 @@
+---
+// Light/dark toggle. Sun icon for light, moon for dark.
+---
+
+<button
+  class="theme-toggle"
+  type="button"
+  aria-label="Toggle color theme"
+  data-theme-toggle
+>
+  <span aria-hidden="true" data-icon-light>☀</span>
+  <span aria-hidden="true" data-icon-dark style="display: none;">☾</span>
+</button>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const iconLight = document.querySelector<HTMLElement>('[data-icon-light]');
+  const iconDark = document.querySelector<HTMLElement>('[data-icon-dark]');
+
+  function syncIcons() {
+    const theme = document.documentElement.getAttribute('data-theme');
+    if (!iconLight || !iconDark) return;
+    iconLight.style.display = theme === 'light' ? 'inline' : 'none';
+    iconDark.style.display = theme === 'dark' ? 'inline' : 'none';
+  }
+
+  syncIcons();
+
+  btn?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    syncIcons();
+  });
+</script>
