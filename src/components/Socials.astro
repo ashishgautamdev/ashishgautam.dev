@@ -1,0 +1,81 @@
+---
+interface Props {
+  size?: 'sm' | 'md';
+  showLabels?: boolean;
+}
+
+const { size = 'md', showLabels = true } = Astro.props;
+
+const links = [
+  {
+    name: 'linkedin',
+    href: 'https://www.linkedin.com/in/ashishgautamdev/',
+    label: 'LinkedIn',
+  },
+  {
+    name: 'github',
+    href: 'https://github.com/ashishgautam2705',
+    label: 'GitHub',
+  },
+  {
+    name: 'instagram',
+    href: 'https://www.instagram.com/ashishgautam.dev',
+    label: 'Instagram',
+  },
+  {
+    name: 'email',
+    href: 'mailto:ashishgautam2705@gmail.com',
+    label: 'Email',
+  },
+];
+---
+
+<ul class={`socials socials-${size}`}>
+  {
+    links.map((l) => (
+      <li>
+        <a href={l.href} rel={l.name === 'email' ? undefined : 'me noopener'} target={l.name === 'email' ? undefined : '_blank'}>
+          {showLabels ? l.label.toLowerCase() : l.name}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .socials {
+    list-style: none;
+    padding: 0;
+    margin: 1.2rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0;
+    align-items: center;
+  }
+
+  .socials li {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .socials li + li::before {
+    content: '·';
+    margin: 0 0.6rem;
+    color: var(--ink-soft);
+  }
+
+  .socials a {
+    border: none;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    transition: color 0.2s var(--ease);
+  }
+
+  .socials a:hover {
+    color: var(--accent);
+  }
+
+  .socials-sm a {
+    font-size: 0.85rem;
+  }
+</style>

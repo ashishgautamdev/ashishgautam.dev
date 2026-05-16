@@ -1,0 +1,52 @@
+---
+// Subtle custom cursor — grows when hovering over interactive elements.
+---
+
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<script>
+  const dot = document.querySelector<HTMLElement>('.cursor-dot');
+  if (dot && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let x = 0,
+      y = 0,
+      tx = 0,
+      ty = 0;
+    let visible = false;
+
+    window.addEventListener('mousemove', (e) => {
+      tx = e.clientX;
+      ty = e.clientY;
+      if (!visible) {
+        dot.classList.add('visible');
+        visible = true;
+      }
+    });
+
+    window.addEventListener('mouseleave', () => {
+      dot.classList.remove('visible');
+      visible = false;
+    });
+
+    document.addEventListener('mouseover', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a, button, [role="button"], input, textarea')) {
+        dot.classList.add('active');
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a, button, [role="button"], input, textarea')) {
+        dot.classList.remove('active');
+      }
+    });
+
+    function tick() {
+      x += (tx - x) * 0.22;
+      y += (ty - y) * 0.22;
+      dot!.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+</script>

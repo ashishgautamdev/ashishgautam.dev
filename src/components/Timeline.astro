@@ -1,0 +1,177 @@
+---
+import { getCollection } from 'astro:content';
+
+const entries = await getCollection('timeline');
+
+const sorted = entries.sort((a, b) => {
+  if (b.data.year !== a.data.year) return b.data.year - a.data.year;
+  return (b.data.order ?? 0) - (a.data.order ?? 0);
+});
+
+const typeLabel: Record<string, string> = {
+  work: 'work',
+  education: 'education',
+  life: 'life',
+};
+
+function rangeLabel(year: number, endYear?: number) {
+  if (!endYear) return `${year}`;
+  if (endYear === year) return `${year}`;
+  return `${year} – ${endYear}`;
+}
+---
+
+<ol class="timeline">
+  {
+    sorted.map((entry) => (
+      <li class={`timeline-item type-${entry.data.type}`}>
+        <div class="timeline-dot" aria-hidden="true" />
+        <div class="timeline-meta">
+          <span class="timeline-year">
+            {rangeLabel(entry.data.year, entry.data.endYear)}
+          </span>
+          <span class="timeline-type">{typeLabel[entry.data.type]}</span>
+        </div>
+        <div class="timeline-body">
+          <h3 class="timeline-title">{entry.data.title}</h3>
+          {entry.data.org && (
+            <p class="timeline-org">
+              {entry.data.org}
+              {entry.data.location && (
+                <span class="muted"> · {entry.data.location}</span>
+              )}
+            </p>
+          )}
+          <p class="timeline-summary">{entry.data.summary}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6.5rem;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    width: 1px;
+    background: var(--rule);
+  }
+
+  .timeline-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 1.25rem;
+    padding: 0.6rem 0 1.4rem;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: 6.5rem;
+    top: 0.85rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid var(--ink-soft);
+    transform: translateX(-50%);
+    transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+
+  .timeline-item.type-work .timeline-dot {
+    border-color: var(--accent);
+  }
+  .timeline-item.type-education .timeline-dot {
+    background: var(--ink-soft);
+    border-color: var(--ink-soft);
+  }
+  .timeline-item.type-life .timeline-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .timeline-item:hover .timeline-dot {
+    transform: translateX(-50%) scale(1.4);
+  }
+
+  .timeline-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 0.15rem;
+    text-align: right;
+    padding-right: 1.1rem;
+  }
+
+  .timeline-year {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink);
+  }
+
+  .timeline-type {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+  }
+
+  .timeline-body {
+    padding-left: 0.5rem;
+  }
+
+  .timeline-title {
+    font-family: var(--sans);
+    font-size: 1.02rem;
+    font-weight: 600;
+    margin: 0 0 0.15em;
+  }
+
+  .timeline-org {
+    margin: 0 0 0.4em;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
+  .timeline-summary {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 600px) {
+    .timeline::before {
+      left: 0.5rem;
+    }
+    .timeline-item {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+      padding-left: 1.5rem;
+    }
+    .timeline-dot {
+      left: 0.5rem;
+      top: 0.6rem;
+    }
+    .timeline-meta {
+      flex-direction: row;
+      gap: 0.6rem;
+      text-align: left;
+      padding-right: 0;
+    }
+    .timeline-body {
+      padding-left: 0;
+    }
+  }
+</style>

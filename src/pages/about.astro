@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../components/Layout.astro';
+import Timeline from '../components/Timeline.astro';
+import Socials from '../components/Socials.astro';
+import me from '../assets/me.jpeg';
+---
+
+<Layout
+  title="About — Ashish Gautam"
+  description="A bit about Ashish Gautam — software engineer at Apple — and a timeline of how he got here."
+>
+  <section class="hero hero-with-photo">
+    <div class="hero-photo hero-photo-sm">
+      <Image src={me} alt="Ashish Gautam" width={130} height={130} loading="eager" />
+    </div>
+    <div>
+      <p class="eyebrow">about</p>
+      <h1>Where I've been.</h1>
+      <p class="lede">
+        A short version of the long story — the schools, the jobs, and the
+        places that have shaped how I build software.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <p>
+      I'm a software engineer with around eight years of experience, currently
+      at <strong>Apple</strong> in the <em>Applied Machine Learning</em> org in
+      Hyderabad. Before Apple, I worked at <strong>Salesforce</strong> on Media
+      Cloud, at <strong>Amazon</strong> in the Seller &amp; Fulfillment Tech
+      org, and at <strong>Nagarro</strong> on large-scale e-commerce systems.
+    </p>
+    <p>
+      I tend to work on backends — Java, Python, C++, JavaScript on top — and I
+      care a lot about the boring infrastructure that holds everything else up.
+      Strong foundations in data structures, algorithms, and the kind of
+      day-to-day craft that doesn't show up in screenshots.
+    </p>
+    <p>
+      I've lived in <strong>Delhi</strong> most of my life — that's where I grew
+      up, studied, and worked through Nagarro, Amazon, and Salesforce. Apple is
+      what brought me to <strong>Hyderabad</strong>, where I'm based now.
+    </p>
+    <p>
+      The fastest way to reach me is
+      <a href="mailto:ashishgautam2705@gmail.com">email</a>, or via
+      <a href="https://www.linkedin.com/in/ashishgautamdev/">LinkedIn</a>.
+    </p>
+    <Socials size="sm" />
+  </section>
+
+  <section class="section">
+    <h2>Timeline</h2>
+    <Timeline />
+  </section>
+</Layout>

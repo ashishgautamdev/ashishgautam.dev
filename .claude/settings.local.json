@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npm uninstall *)",
+      "Bash(awk '{print $5, $9}')"
+    ]
+  }
+}
