@@ -1,0 +1,56 @@
+---
+import Layout from '../../components/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+function fmt(d: Date) {
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+---
+
+<Layout title={`${post.data.title} — Ashish Gautam`} description={post.data.description}>
+  <article>
+    <header class="hero">
+      <p class="eyebrow">
+        <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+        {post.data.updatedDate && (
+          <span> · updated {fmt(post.data.updatedDate)}</span>
+        )}
+      </p>
+      <h1>{post.data.title}</h1>
+      <p class="lede">{post.data.description}</p>
+    </header>
+
+    <div class="prose section">
+      <Content />
+    </div>
+
+    <p class="muted" style="margin-top: 3rem;">
+      <a href="/blog">← back to writing</a>
+    </p>
+  </article>
+</Layout>
+
+<style>
+  .prose :global(h2) {
+    margin-top: 2.4em;
+  }
+  .prose :global(img) {
+    max-width: 100%;
+    border-radius: var(--radius);
+  }
+</style>
