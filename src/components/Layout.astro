@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import ThemeToggle from './ThemeToggle.astro';
 import Cursor from './Cursor.astro';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -74,6 +75,7 @@ const isActive = (href: string) =>
     </footer>
 
     <Cursor />
+    <Analytics />
 
     <script is:inline>
       // Console easter egg — for the curious who hit F12.
